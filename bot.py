@@ -79,8 +79,6 @@ async def publicar_nueva_curiosidad():
 # Este es el evento que se ejecuta cuando el bot se enciende.
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} está conectado al Discord!')
-    # Inicia el ciclo de la tarea programada
     tarea_publicar = tarea_publicar_curiosidad.start()
 
 # Tarea programada para publicar la curiosidad cada 1 minuto.
@@ -92,7 +90,6 @@ async def tarea_publicar_curiosidad():
 @tarea_publicar_curiosidad.before_loop
 async def antes_publicar_curiosidad():
     await bot.wait_until_ready()
-    print('Publicando curiosidad...')
     
 # El bot se conecta a Discord y espera a recibir comandos.
 bot.run(TOKEN)
