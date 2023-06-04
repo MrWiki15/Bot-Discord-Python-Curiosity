@@ -4,7 +4,7 @@ import random
 import asyncio
 
 # Este es el token de autenticación generado en Discord Developers.
-TOKEN = 'MTExMTMxNjg0MjAxMTcwOTQ0MA.Gnlwgq.4OY4VTdHFuymF3NG80lqrDxtDyKE1WvqBGlstE'
+TOKEN = 'MTExNDgzNDY4Njk0NzExNTExOQ.Gd30rA.oYVECb2J_sB-PN7_dXpNNVBN5vLOrCDd1lTEq8'
 
 intents = discord.Intents.default()
 intents.members = True
