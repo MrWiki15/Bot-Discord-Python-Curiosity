@@ -4,7 +4,7 @@ import random
 import asyncio
 
 # Este es el token de autenticación generado en Discord Developers.
-TOKEN = 'MTExNDgzNDY4Njk0NzExNTExOQ.Gd30rA.oYVECb2J_sB-PN7_dXpNNVBN5vLOrCDd1lTEq8'
+TOKEN = 'Token'
 
 intents = discord.Intents.default()
 intents.members = True
@@ -68,7 +68,7 @@ curiosidades = [
 ]
 
 #Aquí se define el canal donde se publicará la curiosidad
-canal_id = 1106851485142229003
+canal_id = 'canal_id'
 
 # Mensaje que se publicará
 async def publicar_nueva_curiosidad():
@@ -80,6 +80,7 @@ async def publicar_nueva_curiosidad():
 @bot.event
 async def on_ready():
     tarea_publicar = tarea_publicar_curiosidad.start()
+    print('Publicando una curiosidad')
 
 # Tarea programada para publicar la curiosidad cada 1 minuto.
 @tasks.loop(minutes=1)
