@@ -3,19 +3,19 @@ from discord.ext import commands, tasks
 import random
 import asyncio
 
-# Este es el token de autenticación generado en Discord Developers.
-TOKEN = 'Token'
+# This is the authentication token generated in Discord Developers.
+TOKEN = 'MTExNDgzNDY4Njk0NzExNTExOQ.Gg_WKP.mdx9XQWndDgLK4kOwRpOjsIeGqAPiCPSSASsfw'
 
 intents = discord.Intents.default()
 intents.members = True
 client = discord.Client(intents=intents)
 
-# Aquí se definen los comandos del bot.
+# Here the bot commands are defined.
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-# Aquí se definen las curiosidades aleatorias.
-curiosidades = [
-    'Sabias que: Hace unos pocos anos se registró uno de los sucesos más extraños en la industria de minería de Bitcoin, el cual fue reportado por la cuenta de Twitter de Jameson Lopp. Lopp publicó los datos de un bloque totalmente vacío de bitcoins, cuya recompensa por confirmación no había sido reclamada. Es decir, un minero había trabajado gratis. Los 12,5 BTC que le correspondían al minero por sus operaciones en la red no habían sido reclamados al momento de finalizar la operación, por lo cual los mismos se perdieron irremediablemente. Un error que salió muy costoso, en vista de que 12,5 BTC representan hoy en día un total de más de 338 mil dólares. De esta manera, el bloque 501726 ha quedado grabado como el único bloque de la red sin ningún bitcoin registrado', 
+# Here the random curiosities are defined.
+curiosities = [
+  'Sabias que: Hace unos pocos anos se registró uno de los sucesos más extraños en la industria de minería de Bitcoin, el cual fue reportado por la cuenta de Twitter de Jameson Lopp. Lopp publicó los datos de un bloque totalmente vacío de bitcoins, cuya recompensa por confirmación no había sido reclamada. Es decir, un minero había trabajado gratis. Los 12,5 BTC que le correspondían al minero por sus operaciones en la red no habían sido reclamados al momento de finalizar la operación, por lo cual los mismos se perdieron irremediablemente. Un error que salió muy costoso, en vista de que 12,5 BTC representan hoy en día un total de más de 338 mil dólares. De esta manera, el bloque 501726 ha quedado grabado como el único bloque de la red sin ningún bitcoin registrado', 
   "Muchos preguntan intrigados si la Blockchain cambiara el mundo tal y como lo conocemos, y la respuesta es un rotundo SI: El Blockchain representa una innovación en el registro y distribución de información, el cual elimina la necesidad de un partido de confianza para facilitar las relaciones digitales. La Blockchain aumenta la confianza, la seguridad, la transparencia y la trazabilidad de los datos compartidos en una red empresarial, aumentando los ahorros en costos gracias a sus nuevas eficiencias. Una tecnologia que marcara el futuro",
     'En el bloque 270953 se encuentra registrada la transacción más grande de Bitcoin nunca antes hecha, la cual logró enviar un total de 194.993 bitcoins, monto que hoy en día representa casi 2 billones de dólares americanos. Sin lugar a dudas, una cantidad monstruosa de dinero. La comisión total por la transacción fue de tan sólo 0,5 BTC, un descuento irrisorio ante dicha dimensión de dinero. Asimismo, la operación se realizó en el mes de noviembre del 2013, fecha en donde el Bitcoin todavía no despegaba su popularidad y sus precios de mercado eran muy inferiores a los registrados hoy en día',
     'Los NFTs o tokens no fungibles (Non Fungible Token en inglés) son representaciones inequívocas de activos, tanto digitales como físicos, en la red blockchain. Usan la misma tecnología que las criptomonedas, pero al contrario que estas, no se pueden dividir ni intercambiar entre sí, pero sí se pueden comprar y vender.',
@@ -67,30 +67,41 @@ curiosidades = [
   'Para mantenerse despierto en las mañanas son más efectivas las manzanas que la cafeína.'
 ]
 
-#Aquí se define el canal donde se publicará la curiosidad
-canal_id = 'canal_id'
+# Este es el canal al que se enviaran las curiosidades
+channel_id = 1106851485142229003
 
-# Mensaje que se publicará
-async def publicar_nueva_curiosidad():
-    canal = bot.get_channel(canal_id)
-    random_curiosidad = random.choice(curiosidades)
-    await canal.send(random_curiosidad)
+# Esta es la funcion para poner una nueva curiosidad
+async def post_new_curiosity():
+  try:
+    # Elige el canal al que enviaras la curiosidad
+    channel = bot.get_channel(channel_id)
+    # Elige una curiosidad random
+    random_curiosity = random.choice(curiosities)
+    # Envia la curiosidad al canal
+    await channel.send(random_curiosity)
+  except Exception as e:
+    print(e)
 
-# Este es el evento que se ejecuta cuando el bot se enciende.
+
+# Crea un evento con el bot para ponerlo a correr
 @bot.event
 async def on_ready():
-    tarea_publicar = tarea_publicar_curiosidad.start()
-    print('Publicando una curiosidad')
+  # Enpieza a postear la curiosidad cada minuto
+  @tasks.loop(minutes=1)
+  async def post_curiosities():
+    # Get a random curiosity.
+    random_curiosity = random.choice(curiosities)
 
-# Tarea programada para publicar la curiosidad cada 1 minuto.
-@tasks.loop(minutes=1)
-async def tarea_publicar_curiosidad():
-    await publicar_nueva_curiosidad()
+    # Get the channel where the curiosity will be posted.
+    channel = bot.get_channel(channel_id)
 
-# Manejador de errores para detener la tarea de publicación en caso de errores
-@tarea_publicar_curiosidad.before_loop
-async def antes_publicar_curiosidad():
-    await bot.wait_until_ready()
-    
-# El bot se conecta a Discord y espera a recibir comandos.
+    # Envia la curiosidad a el canal.
+    await channel.send(random_curiosity)
+    #Confirma que se estan publicando las curiosidades.
+    print('Publicando curiosidad...')
+
+  # Que comience la fiesta.
+  post_curiosities.start()
+
+# Pon el bot a correr
 bot.run(TOKEN)
